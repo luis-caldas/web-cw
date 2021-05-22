@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+		<!-- Metadata and visual -->
+		<meta name="description" content="CW Web - Tools for learning CW and Flags">
+		<meta name="author" content="Luis Caldas - luiscaldas.com">
+		<meta name="theme-color" content="#101010" />
+		<link rel="icon" href="images/favicon.png">
+
+		<title>CW</title>
+
+		<link href="css/lib/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap core CSS -->
+
+		<!-- Preloading -->
+		<link rel="prefetch" href="images/bulb-on.png">
+		<link rel="prefetch" href="images/bulb-off.png">
+
+		<!-- My CSS files -->
+		<link href="css/main.css" rel="stylesheet">
+
+	</head>
+	<body>
+
+		<div id="header"></div>
+
+		<main role="main" class="flex-shrink-0">
+			<div class="container">
+				<p class="lead">Flashing</p>
+				<p>Choose your flashing options and press start</p>	
+				<label for="nr-chars">Number of Characters</label>
+				<select class="form-control" id="nr-chars">
+					<option>5</option>
+					<option>10</option>
+					<option>25</option>
+					<option>50</option>
+					<option>100</option>
+				</select>
+				<label class="mt-2" or="wpm">Words per minute (WPM)</label>
+				<select class="form-control" id="wpm">
+					<option>6</option>
+					<option>5</option>
+					<option>4</option>
+					<option>3</option>
+					<option>2</option>
+					<option>1</option>
+					<option>10</option>
+					<option>9</option>
+					<option>8</option>
+					<option>7</option>
+				</select>
+				<label class="mt-2" or="multi">Character spacing multiplier (more time between chars)</label>
+				<select class="form-control" id="multi">
+					<option>3</option>
+					<option>2</option>
+					<option>1</option>
+				</select>
+				<button id="start-button" type="button" class="mt-3 btn btn-block btn-primary" onClick="startFlashing();">Start</button>
+				<img src="images/bulb-off.png" id="lamp" class="rounded img-fluid mx-auto d-block" alt="Lamp">
+				<button class="mt-3 btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#result-morse" id="result-morse-btn" disabled>
+				Show Characters
+				</button>
+				<div class="collapse" id="result-morse">
+					<div class="card card-body" id="morse-output"></div>
+				</div>
+			</div>
+		</main>
+
+		<!-- JavaScript files in the end to load faster -->
+		<script src="js/lib/jquery.min.js"></script><!-- jQuery -->
+		<script src="js/lib/bootstrap.min.js"></script><!-- Boostrap -->
+
+		<!-- My scripts -->
+		<script src="js/main.js"></script><!-- Project main -->
+		<script src="js/generator.js"></script><!-- Morse generator -->
+
+		<!-- Manual script -->
+		<script>
+
+			'use strict';
+
+			// when start is clicked
+			function startFlashing() {
+
+				// extract user input
+				let wpm = $("#wpm").val();
+				let nrChars = $("#nr-chars").val();
+				let spaceMulti = $("#multi").val(); 
+
+				// calculate dits in ms based on wpm
+				let ditTime = 1200 / wpm;
+
+				// disable buttons
+				$("#start-button").prop("disabled", true);
+				$("#result-morse-btn").prop("disabled", true);
+
+				// clear result area
+				$("#morse-output").html("");
+
+				// hide collapsable panel
+				$("#result-morse").collapse("hide");
+
+				// focus on the lamp
+				$("html, body").animate({
+					scrollTop: $("#lamp").offset().top
+				}, 1000);
+
+				// generate chars
+				let randomChars = generateRandom(nrChars);
+
+				// create unmutable copy
+				const unmutableChars = Array.from(randomChars);
+
+				// iterate the chars and blink them
+				flashSequence(randomChars, unmutableChars, ditTime, spaceMulti);
+
+			}
+
+			function flashSequence(charsSequence, untouchedChars, ditTime, multi) {
+
+				// start flashing bt
+				flashRepresentation(morseBt.split(''), ditTime, function() {
+
+				// wait after bt
+				waitCold(ditTime * betweenCharsDit * multi, function() {
+
+				// flash the representation of the char list
+				flashListRepresentation(charsSequence, ditTime, multi, function () {
+
+				// after flashing is done bt again
+				flashRepresentation(morseBt.split(''), ditTime, function () {
+
+				// enable buttons again
+				$("#start-button").prop("disabled", false);
+				$("#result-morse-btn").prop("disabled", false);
+
+				// populate the hidden data
+				$("#morse-output").html(groupCharList(5, 5, untouchedChars));
+
+				})
+				})
+				})
+				});
+
+			}
+
+			function flashListRepresentation(charList, ditTime, multi, returnHook) {
+
+				// functionally iterate chars
+				if (charList.length > 0) {
+
+					// shift list and acquire char
+					let charNow = charList.shift();
+
+					// translate char
+					let translatedChar = morseMatch(charNow);
+
+					// check if we are the last item
+					if (charList.length == 1)
+						// flash the last representation without waiting
+						flashRepresentation(translatedChar, ditTime, function() {
+						flashListRepresentation(charList, ditTime, multi, returnHook);
+						});
+					else {
+						// flash the representation with a wait
+						flashRepresentation(translatedChar, ditTime, function () {
+						waitCold(ditTime * betweenCharsDit * multi, function () {
+						flashListRepresentation(charList, ditTime, multi, returnHook);
+						});
+						});
+					}
+
+				} else
+					returnHook();
+			}
+
+			function flashRepresentation(charInRepresentation, ditTime, returnHook) {
+
+				// functionally iterate the chars
+				if (charInRepresentation.length > 0) {
+
+					// shift items from array so we can recurse functionally
+					let charNow = charInRepresentation.shift();
+
+					// calculate the time of the dit now
+					let timeNow = ditTime;
+					if (charNow == '-')
+						timeNow = ditTime * 3;
+
+					// flash it
+					blinkLamp(timeNow, function() {
+
+					// wait dit time for next representation
+					if (charInRepresentation.length > 0) {
+						waitCold(ditTime, function () {
+						flashRepresentation(charInRepresentation, ditTime, returnHook);
+						});
+					} else
+						// flash the rest of the chars
+						flashRepresentation(charInRepresentation, ditTime, returnHook);
+
+					})
+
+				} else
+					returnHook();
+
+			}
+
+			function morseMatch(charIn) {
+				// extract the location of morse representation
+				return morseMatrix[morseList.indexOf(charIn)].split('');
+			}
+
+			function waitCold(time, returnHook) {
+				setTimeout(returnHook, time);
+			}
+
+			function blinkLamp(time, returnHook) {
+				// turn lamp on
+				$("#lamp").attr("src", "images/bulb-on.png");
+
+				setTimeout(function () {
+					// turn lamp off
+					$("#lamp").attr("src", "images/bulb-off.png");
+
+					// use the return hook
+					returnHook();
+				}, time);
+			}
+
+		</script>
+
+	</body>
+</html>

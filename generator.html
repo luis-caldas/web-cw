@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+		<!-- Metadata and visual -->
+		<meta name="description" content="CW Web - Tools for learning CW and Flags">
+		<meta name="author" content="Luis Caldas - luiscaldas.com">
+		<meta name="theme-color" content="#101010" />
+		<link rel="icon" href="images/favicon.png">
+
+		<title>CW</title>
+
+		<link href="css/lib/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap core CSS -->
+
+		<!-- My CSS files -->
+		<link href="css/main.css" rel="stylesheet">
+
+	</head>
+	<body>
+
+		<div id="header"></div>
+
+		<main role="main" class="flex-shrink-0">
+			<div class="container">
+				<p class="lead">Generates random string of morse characters</p>
+				<p>Choose quantity of characters to generate</p>
+				<div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Characters
+					</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item" href="#" onClick="populate(50);">50</a>
+						<a class="dropdown-item" href="#" onClick="populate(100);">100</a>
+						<a class="dropdown-item" href="#" onClick="populate(200);">200</a>
+					</div>
+				</div>
+				<br>
+				<p class="last selectable" id="morse-input"></p>
+			</div>
+		</main>
+
+		<!-- JavaScript files in the end to load faster -->
+		<script src="js/lib/jquery.min.js"></script><!-- jQuery -->
+		<script src="js/lib/popper.min.js"></script><!-- Boostrap -->
+		<script src="js/lib/bootstrap.min.js"></script><!-- Boostrap -->
+
+		<!-- My scripts -->
+		<script src="js/main.js"></script><!-- Project main -->
+		<script src="js/generator.js"></script><!-- Morse generator -->
+
+		<!-- Manual scripts -->
+		<script>
+			function populate(numberOfChars) {
+				let spacing = 5;
+				let rows = 5;
+				$("#morse-input").html(groupCharList(spacing, rows, generateRandom(numberOfChars)));
+			}
+		</script>
+
+	</body>
+</html>
