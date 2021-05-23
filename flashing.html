@@ -121,13 +121,16 @@
 			function flashSequence(charsSequence, untouchedChars, ditTime, multi) {
 
 				// start flashing bt
-				flashRepresentation(morseBt.split(''), ditTime, function() {
+				flashRepresentation(morseBt.split(''), ditTime, function () {
 
 				// wait after bt
-				waitCold(ditTime * betweenCharsDit * multi, function() {
+				waitCold(ditTime * betweenCharsDit * multi, function () {
 
 				// flash the representation of the char list
 				flashListRepresentation(charsSequence, ditTime, multi, function () {
+
+				// wait after list is done
+				waitCold(ditTime * betweenCharsDit * multi, function () {
 
 				// after flashing is done bt again
 				flashRepresentation(morseBt.split(''), ditTime, function () {
@@ -142,6 +145,7 @@
 				})
 				})
 				})
+				})
 				});
 
 			}
@@ -149,6 +153,7 @@
 			function flashListRepresentation(charList, ditTime, multi, returnHook) {
 
 				// functionally iterate chars
+				console.log(charList.length + " " + charList)
 				if (charList.length > 0) {
 
 					// shift list and acquire char
@@ -158,12 +163,14 @@
 					let translatedChar = morseMatch(charNow);
 
 					// check if we are the last item
-					if (charList.length == 1)
+					if (charList.length == 0) {
+						console.log("Going to last");
 						// flash the last representation without waiting
 						flashRepresentation(translatedChar, ditTime, function() {
 						flashListRepresentation(charList, ditTime, multi, returnHook);
 						});
-					else {
+					} else {
+						console.log("Going to start " + charList);
 						// flash the representation with a wait
 						flashRepresentation(translatedChar, ditTime, function () {
 						waitCold(ditTime * betweenCharsDit * multi, function () {
