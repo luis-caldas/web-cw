@@ -153,7 +153,6 @@
 			function flashListRepresentation(charList, ditTime, multi, returnHook) {
 
 				// functionally iterate chars
-				console.log(charList.length + " " + charList)
 				if (charList.length > 0) {
 
 					// shift list and acquire char
@@ -164,13 +163,11 @@
 
 					// check if we are the last item
 					if (charList.length == 0) {
-						console.log("Going to last");
 						// flash the last representation without waiting
 						flashRepresentation(translatedChar, ditTime, function() {
 						flashListRepresentation(charList, ditTime, multi, returnHook);
 						});
 					} else {
-						console.log("Going to start " + charList);
 						// flash the representation with a wait
 						flashRepresentation(translatedChar, ditTime, function () {
 						waitCold(ditTime * betweenCharsDit * multi, function () {
