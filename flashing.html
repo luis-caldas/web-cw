@@ -16,8 +16,7 @@
 		<link href="css/lib/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap core CSS -->
 
 		<!-- Preloading -->
-		<link rel="prefetch" href="images/bulb-on.png">
-		<link rel="prefetch" href="images/bulb-off.png">
+		<link rel="prefetch" href="images/lamp.svg">
 
 		<!-- My CSS files -->
 		<link href="css/main.css" rel="stylesheet">
@@ -59,7 +58,7 @@
 					<option>1</option>
 				</select>
 				<button id="start-button" type="button" class="mt-3 btn btn-block btn-primary" onClick="startFlashing();">Start</button>
-				<img src="images/bulb-off.png" id="lamp" class="rounded img-fluid mx-auto d-block" alt="Lamp">
+				<img src="images/lamp.svg" id="lamp" class="rounded img-fluid mt-5 mb-5 mx-auto d-block" alt="Lamp">
 				<button class="mt-3 btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#result-morse" id="result-morse-btn" disabled>
 				Show Characters
 				</button>
@@ -220,11 +219,11 @@
 
 			function blinkLamp(time, returnHook) {
 				// turn lamp on
-				$("#lamp").attr("src", "images/bulb-on.png");
+				$("#lamp").css( { "filter" : "invert(100%)" } );
 
 				setTimeout(function () {
 					// turn lamp off
-					$("#lamp").attr("src", "images/bulb-off.png");
+					$("#lamp").css( { "filter" : "" } );
 
 					// use the return hook
 					returnHook();
