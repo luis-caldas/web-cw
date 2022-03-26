@@ -3,8 +3,8 @@
  ***********/
 
 @font-face {
-	font-family: iosevka-local;
-	src: url("../fonts/iosevka-mono.ttf");
+	font-family: "Iosevka Slab";
+	src: url("../fonts/font.ttc");
 }
 
 @font-face {
@@ -45,7 +45,7 @@ html {
 }
 
 body {
-	font-family: iosevka-local, monospace;
+	font-family: "Iosevka Slab", monospace;
 	background-image: url("../images/dpm.png");
 	background-repeat: repeat;
 	background-color: #101010;
