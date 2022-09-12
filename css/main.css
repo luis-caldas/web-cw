@@ -3,13 +3,9 @@
  ***********/
 
 @font-face {
-	font-family: "Iosevka Slab";
-	src: url("../fonts/font.ttc");
-}
-
-@font-face {
-	font-family: icon-font;
-	src: url("../fonts/font-awesome-solid.woff2");
+	font-family: "Iosevka Term Slab";
+	src: url('/fonts/iosevka-term-slab-regular.woff2') format('woff2'),
+		 url('/fonts/iosevka-term-slab-regular.ttf')  format('truetype');
 }
 
 /******************
@@ -45,17 +41,12 @@ html {
 }
 
 body {
-	font-family: "Iosevka Slab", monospace;
+	font-family: "Iosevka Term Slab", monospace;
 	background-image: url("../images/dpm.png");
 	background-repeat: repeat;
 	background-color: #101010;
 	color: #E0E0E0;
 	min-width: 300px;
-}
-
-.icon-font {
-	font-family: icon-font;
-	font-size: 1.25rem;
 }
 
 /**************
