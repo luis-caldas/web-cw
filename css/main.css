@@ -3,9 +3,8 @@
  ***********/
 
 @font-face {
-	font-family: "Iosevka Term Slab";
-	src: url('/fonts/iosevka-term-slab-regular.woff2') format('woff2'),
-		 url('/fonts/iosevka-term-slab-regular.ttf')  format('truetype');
+	font-family: "Courier Prime";
+	src: url('/fonts/courier-prime.ttf')  format('truetype');
 }
 
 /******************
@@ -41,7 +40,7 @@ html {
 }
 
 body {
-	font-family: "Iosevka Term Slab", monospace;
+	font-family: "Courier Prime", monospace;
 	background-image: url("../images/dpm.png");
 	background-repeat: repeat;
 	background-color: #101010;
